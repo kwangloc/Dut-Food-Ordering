@@ -1,0 +1,5 @@
+.env
+.env.example
+package.json.old
+dist/
+node_modules/
