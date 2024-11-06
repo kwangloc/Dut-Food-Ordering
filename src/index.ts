@@ -34,6 +34,10 @@ app.get("/health", async (req: Request, res: Response) => {
   res.send({ message: "health OK!" });
 });
 
+app.get("/health2", async (req: Request, res: Response) => {
+  res.send({ message: "health2 OK!" });
+});
+
 app.use("/api/my/user", myUserRoute);
 // app.use("/api/my/restaurant", myRestaurantRoute);
 // app.use("/api/restaurant", restaurantRoute);
