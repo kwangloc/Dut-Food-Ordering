@@ -19,6 +19,9 @@ const getMyRestaurant = async (req: Request, res: Response) => {
 
 const createMyRestaurant = async (req: Request, res: Response) => {
   try {
+
+    // 1. check existing restaurant (by checking userId)
+    
     const existingRestaurant = await Restaurant.findOne({ user: req.userId });
 
     if (existingRestaurant) {
@@ -26,9 +29,10 @@ const createMyRestaurant = async (req: Request, res: Response) => {
         .status(409)
         .json({ message: "User restaurant already exists" });
     }
-
+    // 2. handle restaurant's image
     const imageUrl = await uploadImage(req.file as Express.Multer.File);
 
+    // 3. create new restaurant in db
     const restaurant = new Restaurant(req.body);
     restaurant.imageUrl = imageUrl;
     restaurant.user = new mongoose.Types.ObjectId(req.userId);
@@ -44,6 +48,7 @@ const createMyRestaurant = async (req: Request, res: Response) => {
 
 const updateMyRestaurant = async (req: Request, res: Response) => {
   try {
+    // 1. check valid restaurant
     const restaurant = await Restaurant.findOne({
       user: req.userId,
     });
@@ -52,6 +57,7 @@ const updateMyRestaurant = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "restaurant not found" });
     }
 
+    // 2. update
     restaurant.restaurantName = req.body.restaurantName;
     restaurant.city = req.body.city;
     restaurant.country = req.body.country;
@@ -123,7 +129,7 @@ const uploadImage = async (file: Express.Multer.File) => {
   const base64Image = Buffer.from(image.buffer).toString("base64");
   const dataURI = `data:${image.mimetype};base64,${base64Image}`;
 
-  const uploadResponse = await cloudinary.v2.uploader.upload(dataURI);
+  const uploadResponse = await cloudinary.v2.uploader.upload(dataURI); // get the API return
   return uploadResponse.url;
 };
 
