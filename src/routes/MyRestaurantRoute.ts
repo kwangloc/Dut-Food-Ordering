@@ -28,7 +28,11 @@ const upload = multer({
 //   MyRestaurantController.updateOrderStatus
 // );
 
-// router.get("/", jwtCheck, jwtParse, MyRestaurantController.getMyRestaurant);
+router.get("/", 
+  // jwtCheck, 
+  jwtParse, 
+  MyRestaurantController.getMyRestaurant
+);
 
 router.post(
   "/",
