@@ -160,14 +160,12 @@ const createSession = async (
 
 const stripeWebhookHandler = async (req: Request, res: Response) => {
   // FOR TESTING
-  console.log("RECEIVED EVENT");
-  console.log("==============");
-  console.log("event: ", req.body);
-  // res.send();
-
-  let event;
+  // console.log("RECEIVED EVENT");
+  // console.log("==============");
+  // console.log("event: ", req.body);
 
   // Make sure the webhook event comes from Stripe
+  let event;
   try {
     const sig = req.headers["stripe-signature"];
     event = STRIPE.webhooks.constructEvent(
@@ -175,7 +173,7 @@ const stripeWebhookHandler = async (req: Request, res: Response) => {
       sig as string,
       STRIPE_ENDPOINT_SECRET
     );
-    console.log("~~~~~~~~~~~~~~~~~~~~~~~passed verification");
+    console.log(`~~~~~~~~~~~~~~~~ ${event.type} passed verification`);
   } catch (error: any) {
     console.log(error);
     return res.status(400).send(`Webhook error: ${error.message}`);
@@ -185,7 +183,7 @@ const stripeWebhookHandler = async (req: Request, res: Response) => {
   if (event.type === "checkout.session.completed") {
     // notice the metadata when we created checkout session
     console.log("~~~~~~~~~~~~~~~~~~~~~~~stripeWebhookHandler");
-    console.log(event.data.object.metadata?.orderId);
+    console.log("oderID: ", event.data.object.metadata?.orderId);
     const order = await Order.findById(event.data.object.metadata?.orderId); 
 
     if (!order) {
