@@ -160,10 +160,10 @@ const createSession = async (
 
 const stripeWebhookHandler = async (req: Request, res: Response) => {
   // FOR TESTING
-  // console.log("RECEIVED EVENT");
-  // console.log("==============");
-  // console.log("event: ", req.body);
-  // res.send();
+  console.log("RECEIVED EVENT");
+  console.log("==============");
+  console.log("event: ", req.body);
+  res.send();
 
   let event;
 
@@ -175,6 +175,7 @@ const stripeWebhookHandler = async (req: Request, res: Response) => {
       sig as string,
       STRIPE_ENDPOINT_SECRET
     );
+    console.log("~~~~~~~~~~~~~~~~~~~~~~~passed verification");
   } catch (error: any) {
     console.log(error);
     return res.status(400).send(`Webhook error: ${error.message}`);

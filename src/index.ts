@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-// import cors from "cors";
+import cors from "cors";
 import "dotenv/config";
 import mongoose from "mongoose";
 import myUserRoute from "./routes/MyUserRoute";
@@ -20,7 +20,7 @@ cloudinary.config({
 
 const app = express();
 
-// app.use(cors());
+app.use(cors());
 
 app.use("/api/order/checkout/webhook", express.raw({ type: "*/*" }));
 
