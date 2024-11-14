@@ -64,6 +64,8 @@ const createCheckoutSession = async (req: Request, res: Response) => {
       restaurant.menuItems
     );
 
+    console.log("~~~~~~~~~~~~~~~~~~~~~~~createCheckoutSession");
+    console.log(newOrder._id);
     const session = await createSession(
       lineItems,
       newOrder._id.toString(), // Mongoose has created id even though the newOrder hasn't been created yet
@@ -127,6 +129,8 @@ const createSession = async (
   deliveryPrice: number,
   restaurantId: string
 ) => {
+  console.log("~~~~~~~~~~~~~~~~~~~~~~~createSession");
+  console.log(orderId);
   const sessionData = await STRIPE.checkout.sessions.create({
     line_items: lineItems,
     shipping_options: [
@@ -146,7 +150,8 @@ const createSession = async (
       orderId,
       restaurantId,
     },
-    success_url: `${FRONTEND_URL}/order-status?success=true`,
+    // success_url: `${FRONTEND_URL}/order-status?success=true`,
+    success_url: `${FRONTEND_URL}/health`,
     cancel_url: `${FRONTEND_URL}/detail/${restaurantId}?cancelled=true`,
   });
 
@@ -178,6 +183,8 @@ const stripeWebhookHandler = async (req: Request, res: Response) => {
   // Only handle checkout.session.completed event
   if (event.type === "checkout.session.completed") {
     // notice the metadata when we created checkout session
+    console.log("~~~~~~~~~~~~~~~~~~~~~~~stripeWebhookHandler");
+    console.log(event.data.object.metadata?.orderId);
     const order = await Order.findById(event.data.object.metadata?.orderId); 
 
     if (!order) {
