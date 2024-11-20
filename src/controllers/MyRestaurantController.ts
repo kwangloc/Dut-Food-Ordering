@@ -81,11 +81,15 @@ const updateMyRestaurant = async (req: Request, res: Response) => {
 };
 
 const getMyRestaurantOrders = async (req: Request, res: Response) => {
+  console.log("@@@@@@@req.userId", req.userId);
+
   try {
     const restaurant = await Restaurant.findOne({ user: req.userId });
     if (!restaurant) {
       return res.status(404).json({ message: "restaurant not found" });
     }
+
+    // console.log()
 
     const orders = await Order.find({ restaurant: restaurant._id })
       .populate("restaurant")
