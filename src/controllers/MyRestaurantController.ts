@@ -3,7 +3,9 @@ import Restaurant from "../models/restaurant";
 import cloudinary from "cloudinary";
 import mongoose from "mongoose";
 import Order from "../models/order";
+import Review from "../models/review";
 
+// RESTAURANT
 const getMyRestaurant = async (req: Request, res: Response) => {
   try {
     const restaurant = await Restaurant.findOne({ user: req.userId });
@@ -80,6 +82,7 @@ const updateMyRestaurant = async (req: Request, res: Response) => {
   }
 };
 
+// ORDER
 const getMyRestaurantOrders = async (req: Request, res: Response) => {
   console.log("@@@@@@@req.userId", req.userId);
 
@@ -137,10 +140,30 @@ const uploadImage = async (file: Express.Multer.File) => {
   return uploadResponse.url;
 };
 
+// REVIEW
+const getMyRestaurantReviews = async (req: Request, res: Response) => {
+  try {
+    const restaurant = await Restaurant.findOne({ user: req.userId });
+    if (!restaurant) {
+      return res.status(404).json({ message: "restaurant not found" });
+    }
+
+    const reviews = await Review.find({ restaurant: restaurant._id })
+      .populate("restaurant")
+      .populate("user");
+
+    res.json(reviews);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "something went wrong" });
+  }
+}
+
 export default {
   updateOrderStatus,
   getMyRestaurantOrders,
   getMyRestaurant,
   createMyRestaurant,
   updateMyRestaurant,
+  getMyRestaurantReviews
 };

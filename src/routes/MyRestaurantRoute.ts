@@ -14,20 +14,8 @@ const upload = multer({
   },
 });
 
-router.get(
-  "/order",
-  // jwtCheck,
-  jwtParse,
-  MyRestaurantController.getMyRestaurantOrders
-);
 
-router.patch(
-  "/order/:orderId/status",
-  // jwtCheck,
-  jwtParse,
-  MyRestaurantController.updateOrderStatus
-);
-
+// RESTAURANT
 router.get("/", 
   // jwtCheck, 
   jwtParse, 
@@ -51,5 +39,29 @@ router.put(
   jwtParse,
   MyRestaurantController.updateMyRestaurant
 );
+
+// ORDER
+router.get(
+  "/order",
+  // jwtCheck,
+  jwtParse,
+  MyRestaurantController.getMyRestaurantOrders
+);
+
+router.patch(
+  "/order/:orderId/status",
+  // jwtCheck,
+  jwtParse,
+  MyRestaurantController.updateOrderStatus
+);
+
+// REVIEW
+router.get(
+  "/review",
+  // jwtCheck,
+  jwtParse,
+  MyRestaurantController.getMyRestaurantReviews
+);
+
 
 export default router;
