@@ -1,0 +1,848 @@
+{
+	"info": {
+		"_postman_id": "a1fd5202-c0a4-41cf-a770-d1346639be32",
+		"name": "Food ordering local",
+		"description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Scripts\" tab**\n\nAdding tests to your requests can help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/fa30ea0a-373d-4545-a668-e7b283cca343/aW1hZ2UucG5n\" alt=\"\" height=\"1530\" width=\"2162\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n    \n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37965156"
+	},
+	"item": [
+		{
+			"name": "user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"auth0Id\": \"google-oauth2|110796503555000992827\",\r\n    \"name\": \"billie\",\r\n    \"email\": \"billie@gmail.com\",\r\n    \"password\": \"123456789\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7000/api/my/user/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"api",
+						"my",
+						"user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoMElkIjoiMWEzaGQzZHMxdzExM3MiLCJlbWFpbCI6Im52YUBnbWFpbC5jb20iLCJfaWQiOiI2NzJiNDA4YTYzNDdiODc2MzhjMWU0NTMiLCJfX3YiOjB9.9ACkgndysJSw0AirxeyT1p-UVPzeMa19wW7PxVhfCgs",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"nguyen van a\",\r\n    \"addressLine1\": \"hoa khanh, lien chieu\",\r\n    \"city\": \"da nang\",\r\n    \"country\": \"viet nam\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7000/api/my/user/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"api",
+						"my",
+						"user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "health",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\": \"6722f8771ff7129a0d315bdd\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7000/health",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\": \"6722f8771ff7129a0d315bdd\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7000/api/my/user/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"api",
+						"my",
+						"user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "health2",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\": \"6722f8771ff7129a0d315bdd\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7000/health",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "restaurant",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoMElkIjoiZ29vZ2xlLW9hdXRoMnwxMTA3OTY1MDM1NTUwMDA5OTI4MjUiLCJlbWFpbCI6ImpvaG5AZ21haWwuY29tIiwiX2lkIjoiNjczZDk1MzdjY2VmMDllYWQ5ZjIxZjhiIiwiX192IjowfQ.bZJ8kOgOZbeaNIihk6dUlyqVCSEoHhfvTDdzP-mgMnc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "imageFile",
+							"type": "file",
+							"src": "/C:/Users/Admin/Desktop/New folder/image_processing20211106-30951-x0wqap.png"
+						},
+						{
+							"key": "restaurantName",
+							"value": "Dan da",
+							"type": "text"
+						},
+						{
+							"key": "city",
+							"value": "Da nang",
+							"type": "text"
+						},
+						{
+							"key": "country",
+							"value": "Vietnam",
+							"type": "text"
+						},
+						{
+							"key": "deliveryPrice",
+							"value": "100",
+							"type": "text"
+						},
+						{
+							"key": "estimatedDeliveryTime",
+							"value": "20",
+							"type": "text"
+						},
+						{
+							"key": "cuisines[0]",
+							"value": "vietnamese",
+							"type": "text"
+						},
+						{
+							"key": "cuisines[1]",
+							"value": "seafood",
+							"type": "text"
+						},
+						{
+							"key": "menuItems[0][name]",
+							"value": "Tom",
+							"type": "text"
+						},
+						{
+							"key": "menuItems[0][price]",
+							"value": "400",
+							"type": "text"
+						},
+						{
+							"key": "menuItems[1][name]",
+							"value": "Ca",
+							"type": "text"
+						},
+						{
+							"key": "menuItems[1][price]",
+							"value": "350",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:7000/api/my/restaurant",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"api",
+						"my",
+						"restaurant"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "restaurant",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoMElkIjoiMWEzaGQzZHMxdzExM3MiLCJlbWFpbCI6Im52YUBnbWFpbC5jb20iLCJfaWQiOiI2NzJiNDA4YTYzNDdiODc2MzhjMWU0NTMiLCJfX3YiOjB9.9ACkgndysJSw0AirxeyT1p-UVPzeMa19wW7PxVhfCgs",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "restaurantName",
+							"value": "Amor",
+							"type": "text"
+						},
+						{
+							"key": "city",
+							"value": "Da nang",
+							"type": "text"
+						},
+						{
+							"key": "country",
+							"value": "Hanoi",
+							"type": "text"
+						},
+						{
+							"key": "deliveryPrice",
+							"value": "100",
+							"type": "text"
+						},
+						{
+							"key": "estimatedDeliveryTime",
+							"value": "20",
+							"type": "text"
+						},
+						{
+							"key": "cuisines[0]",
+							"value": "vietnamese",
+							"type": "text"
+						},
+						{
+							"key": "cuisines[1]",
+							"value": "seafood",
+							"type": "text"
+						},
+						{
+							"key": "imageFile",
+							"type": "file",
+							"src": "/C:/Users/Admin/Desktop/download.png"
+						},
+						{
+							"key": "menuItems[0][name]",
+							"value": "Fried shrimp",
+							"type": "text"
+						},
+						{
+							"key": "menuItems[0][price]",
+							"value": "400",
+							"type": "text"
+						},
+						{
+							"key": "menuItems[1][name]",
+							"value": "Margherita Pizza",
+							"type": "text"
+						},
+						{
+							"key": "menuItems[1][price]",
+							"value": "350",
+							"type": "text"
+						},
+						{
+							"key": "menuItems[2][name]",
+							"value": "Caesar Salad",
+							"type": "text"
+						},
+						{
+							"key": "menuItems[2][price]",
+							"value": "250",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:7000/api/my/restaurant",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"api",
+						"my",
+						"restaurant"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "search restaurant",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\": \"6722f8771ff7129a0d315bdd\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7000/api/restaurant/search/london",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"api",
+						"restaurant",
+						"search",
+						"london"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1 restaurant",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\": \"6722f8771ff7129a0d315bdd\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7000/api/restaurant/672c5b12a7915a26f6bf764b",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"api",
+						"restaurant",
+						"672c5b12a7915a26f6bf764b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "checkout session",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoMElkIjoiZ29vZ2xlLW9hdXRoMnwxMTA3OTY1MDM1NTUwMDA5OTI4MjYiLCJlbWFpbCI6ImFubmFAZ21haWwuY29tIiwiX2lkIjoiNjczZDk3M2JjY2VmMDllYWQ5ZjIxZjk2IiwiX192IjowfQ.9MwouReGUoa-jb4asVbvbJHvOFxuRzaBWUxyAPhX8q0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cartItems\": [\r\n        {\r\n            \"menuItemId\": \"673d96a2ccef09ead9f21f92\",\r\n            \"name\": \"Tom\",\r\n            \"quantity\": \"2\"\r\n        },\r\n        {\r\n            \"menuItemId\": \"673d96a2ccef09ead9f21f93\",\r\n            \"name\": \"Ca\",\r\n            \"quantity\": \"1\"\r\n        }\r\n    ],\r\n    \"deliveryDetails\": {\r\n        \"email\": \"anna@gmail.com\",\r\n        \"name\": \"anna\",\r\n        \"addressLine1\": \"123 Main St\",\r\n        \"city\": \"lien chieu\"\r\n    },\r\n    \"restaurantId\": \"673d96a2ccef09ead9f21f91\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7000/api/order/checkout/create-checkout-session",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"api",
+						"order",
+						"checkout",
+						"create-checkout-session"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "order Copy",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoMElkIjoiMWEzaGQzZHMxdzExM3MiLCJlbWFpbCI6Im52YUBnbWFpbC5jb20iLCJfaWQiOiI2NzJiNDA4YTYzNDdiODc2MzhjMWU0NTMiLCJfX3YiOjB9.9ACkgndysJSw0AirxeyT1p-UVPzeMa19wW7PxVhfCgs",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"restaurant\": \"672c42605efe4a63354f078f\",\r\n    \"user\": \"672b3b85262bfcc3fe4905c9\",\r\n    \"deliveryDetails\": {\r\n        \"email\": \"nvb@gmail.com\",\r\n        \"name\": \"nguyen van b\",\r\n        \"addressLine1\": \"123 Main St\",\r\n        \"city\": \"New York\"\r\n    },\r\n    \"cartItems\": [\r\n        {\r\n        \"menuItemId\": \"67345cba799a631d435797f2\",\r\n        \"name\": \"Fried shrimp\",\r\n        \"quantity\": \"2\"\r\n        },\r\n        {\r\n        \"menuItemId\": \"67345cba799a631d435797f3\",\r\n        \"name\": \"Margherita Pizza\",\r\n        \"quantity\": \"1\"\r\n        }\r\n    ],\r\n    \"totalAmount\": \"3000\",\r\n    \"status\": \"placed\",\r\n    \"createdAt\": \"2024/11/12\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7000/api/order/checkout/create-order",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"api",
+						"order",
+						"checkout",
+						"create-order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "review",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoMElkIjoiZ29vZ2xlLW9hdXRoMnwxMTA3OTY1MDM1NTUwMDA5OTI4MjciLCJlbWFpbCI6ImJpbGxpZUBnbWFpbC5jb20iLCJfaWQiOiI2NzNkYjcyYzVkZThiNmM0YTcyMmQ0YzUiLCJfX3YiOjB9.9hj5IZzXu6zjalAYDEB_iiugkEgpGB6VT70ro0YTaCE",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"restaurantId\": \"673d96a2ccef09ead9f21f91\",\r\n    \"rating\": \"3\",\r\n    \"comment\": \"not bad\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7000/api/review",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"api",
+						"review"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "order status",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoMElkIjoiMWEzaGQzZHMxdzExM3MiLCJlbWFpbCI6Im52YUBnbWFpbC5jb20iLCJfaWQiOiI2NzJiNDA4YTYzNDdiODc2MzhjMWU0NTMiLCJfX3YiOjB9.9ACkgndysJSw0AirxeyT1p-UVPzeMa19wW7PxVhfCgs",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"status\": \"preparing\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7000/api/order/checkout/update-order-status/67347851f6521e9d4b89f908",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"api",
+						"order",
+						"checkout",
+						"update-order-status",
+						"67347851f6521e9d4b89f908"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "restaurant orders local",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoMElkIjoiZ29vZ2xlLW9hdXRoMnwxMTA3OTY1MDM1NTUwMDA5OTI4MjUiLCJlbWFpbCI6ImpvaG5AZ21haWwuY29tIiwiX2lkIjoiNjczZDk1MzdjY2VmMDllYWQ5ZjIxZjhiIiwiX192IjowfQ.bZJ8kOgOZbeaNIihk6dUlyqVCSEoHhfvTDdzP-mgMnc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7000/api/my/restaurant/order/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"api",
+						"my",
+						"restaurant",
+						"order",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "restaurant reviews local",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoMElkIjoiZ29vZ2xlLW9hdXRoMnwxMTA3OTY1MDM1NTUwMDA5OTI4MjUiLCJlbWFpbCI6ImpvaG5AZ21haWwuY29tIiwiX2lkIjoiNjczZDk1MzdjY2VmMDllYWQ5ZjIxZjhiIiwiX192IjowfQ.bZJ8kOgOZbeaNIihk6dUlyqVCSEoHhfvTDdzP-mgMnc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7000/api/my/restaurant/review/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"api",
+						"my",
+						"restaurant",
+						"review",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update order status",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoMElkIjoiZ29vZ2xlLW9hdXRoMnwxMTA3OTY1MDM1NTUwMDA5OTI4MjUiLCJlbWFpbCI6ImpvaG5AZ21haWwuY29tIiwiX2lkIjoiNjczZDk1MzdjY2VmMDllYWQ5ZjIxZjhiIiwiX192IjowfQ.bZJ8kOgOZbeaNIihk6dUlyqVCSEoHhfvTDdzP-mgMnc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"status\": \"outForDelivery\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7000/api/my/restaurant/order/673d97a1ccef09ead9f21f9a/status",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"api",
+						"my",
+						"restaurant",
+						"order",
+						"673d97a1ccef09ead9f21f9a",
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user orders local",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoMElkIjoiMWEzaGQzZHMxdzExYXNkM3MiLCJlbWFpbCI6Im52YkBnbWFpbC5jb20iLCJfaWQiOiI2NzJiM2I4NTI2MmJmY2MzZmU0OTA1YzkiLCJfX3YiOjB9.g1CMxy2oEuex4myVVSyW6JrLZHmfDnKbSLJKiwfSBhgeMa19wW7PxVhfCgs",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cartItems\": [\r\n        {\r\n            \"menuItemId\": \"67345cba799a631d435797f2\",\r\n            \"name\": \"Fried shrimp\",\r\n            \"quantity\": \"2\"\r\n        },\r\n        {\r\n            \"menuItemId\": \"67345cba799a631d435797f3\",\r\n            \"name\": \"Margherita Pizza\",\r\n            \"quantity\": \"1\"\r\n        }\r\n    ],\r\n    \"deliveryDetails\": {\r\n        \"email\": \"nvb@gmail.com\",\r\n        \"name\": \"nguyen van b\",\r\n        \"addressLine1\": \"123 Main St\",\r\n        \"city\": \"New York\"\r\n    },\r\n    \"restaurantId\": \"672c42605efe4a63354f078f\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7000/api/order/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"api",
+						"order",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "restaurant reviews",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoMElkIjoiZ29vZ2xlLW9hdXRoMnwxMTA3OTY1MDM1NTUwMDA5OTI4MjciLCJlbWFpbCI6ImJpbGxpZUBnbWFpbC5jb20iLCJfaWQiOiI2NzNkYjcyYzVkZThiNmM0YTcyMmQ0YzUiLCJfX3YiOjB9.9hj5IZzXu6zjalAYDEB_iiugkEgpGB6VT70ro0YTaCE",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"restaurantId\": \"673d96a2ccef09ead9f21f91\",\r\n    \"rating\": \"3\",\r\n    \"comment\": \"not bad\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7000/api/review/673d96a2ccef09ead9f21f91",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"api",
+						"review",
+						"673d96a2ccef09ead9f21f91"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete review user",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoMElkIjoiZ29vZ2xlLW9hdXRoMnwxMTA3OTY1MDM1NTUwMDA5OTI4MjYiLCJlbWFpbCI6ImFubmFAZ21haWwuY29tIiwiX2lkIjoiNjczZDk3M2JjY2VmMDllYWQ5ZjIxZjk2IiwiX192IjowfQ.9MwouReGUoa-jb4asVbvbJHvOFxuRzaBWUxyAPhX8q0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7000/api/review/673db6b75de8b6c4a722d4c2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"api",
+						"review",
+						"673db6b75de8b6c4a722d4c2"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "https://postman-rest-api-learner.glitch.me/"
+		}
+	]
+}
