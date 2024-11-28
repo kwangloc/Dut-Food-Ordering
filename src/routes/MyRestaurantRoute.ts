@@ -64,12 +64,26 @@ router.get(
 );
 
 // REVENUE
-// REVIEW
 router.get(
   "/revenue",
   // jwtCheck,
   jwtParse,
   MyRestaurantController.getMyRestaurantRevenue
+);
+
+// PROMOTION
+router.get(
+  "/promotion",
+  // jwtCheck,
+  jwtParse,
+  MyRestaurantController.getMyRestaurantPromotion
+);
+
+router.post(
+  "/promotion",
+  // jwtCheck,
+  jwtParse,
+  MyRestaurantController.createMyRestaurantPromotion
 );
 
 

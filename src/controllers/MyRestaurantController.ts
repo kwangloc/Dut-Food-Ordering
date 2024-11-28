@@ -4,6 +4,7 @@ import cloudinary from "cloudinary";
 import mongoose from "mongoose";
 import Order from "../models/order";
 import Review from "../models/review";
+import Promotion from "../models/promotion";
 
 // RESTAURANT
 const getMyRestaurant = async (req: Request, res: Response) => {
@@ -159,64 +160,6 @@ const getMyRestaurantReviews = async (req: Request, res: Response) => {
   }
 }
 
-// REVENUE
-// const getMyRestaurantRevenue = async (req: Request, res: Response) => {
-//   try {
-//     const restaurant = await Restaurant.findOne({ user: req.userId });
-//     if (!restaurant) {
-//       return res.status(404).json({ message: "restaurant not found" });
-//     }
-
-//     // const revenue = await Order.find({ restaurant: restaurant._id })
-//     // res.json(revenue);
-
-//     //
-//     const tmpRevenueByDate: { [key: string]: any[] } = {};
-    
-//     const revenueByDate: { [key: string]: any[] } = {};
-//     const orders = await Order.find({ restaurant: restaurant._id });
-//     orders.forEach(order => {
-//       const date = order.createdAt.toISOString().split('T')[0];
-//       if (!tmpRevenueByDate[date]) {
-//       tmpRevenueByDate[date] = [];
-//       revenueByDate[date] = [];
-//       }
-//       tmpRevenueByDate[date].push(order);
-//     });
-
-//     for (const date in tmpRevenueByDate) {
-//       const revenue: { 
-//         totalAmount: number,
-//         menuItems: any[] 
-//       } = { 
-//         totalAmount: 0,
-//         menuItems: [] 
-//       };
-//       for (const order of tmpRevenueByDate[date]) {
-//         revenue.totalAmount += parseFloat(order.totalAmount);
-//         for (const item of order.cartItems) {
-//           revenue.menuItems.push(item);
-//         }
-//       }
-//       revenueByDate[date].push(revenue);
-//     }
-//     console.log("revenueByDate:", revenueByDate);
-
-//     // tmpRevenueByDate.forEach(day => {
-//     //   day.forEach(order => {
-
-//     //   })
-//     // }) 
-
-
-//     res.json(tmpRevenueByDate);
-//     //
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ message: "something went wrong" });
-//   }
-// }
-
 const getMyRestaurantRevenue = async (req: Request, res: Response) => {
   try {
     // Find the restaurant associated with the logged-in user
@@ -271,6 +214,44 @@ const getMyRestaurantRevenue = async (req: Request, res: Response) => {
   }
 };
 
+// PROMOTION
+const createMyRestaurantPromotion = async (req: Request, res: Response) => {
+  try {
+    const restaurant = await Restaurant.findOne({ user: req.userId });
+    if (!restaurant) {
+      return res.status(404).json({ message: "restaurant not found" });
+    }
+
+    // 3. create new promotion in db
+    const promotion = new Promotion({
+      restaurant: new mongoose.Types.ObjectId(restaurant._id),
+      ...req.body
+    });
+    await promotion.save();
+
+    res.json(promotion);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "something went wrong" });
+  }
+}
+
+const getMyRestaurantPromotion = async (req: Request, res: Response) => {
+  try {
+    const restaurant = await Restaurant.findOne({ user: req.userId });
+    if (!restaurant) {
+      return res.status(404).json({ message: "restaurant not found" });
+    }
+
+    const promotions = await Promotion.find({ restaurant: restaurant._id })
+
+    res.json(promotions);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "something went wrong" });
+  }
+}
+
 export default {
   updateOrderStatus,
   getMyRestaurantOrders,
@@ -278,5 +259,7 @@ export default {
   createMyRestaurant,
   updateMyRestaurant,
   getMyRestaurantReviews,
-  getMyRestaurantRevenue
+  getMyRestaurantRevenue,
+  createMyRestaurantPromotion,
+  getMyRestaurantPromotion
 };
