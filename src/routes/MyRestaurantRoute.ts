@@ -63,5 +63,14 @@ router.get(
   MyRestaurantController.getMyRestaurantReviews
 );
 
+// REVENUE
+// REVIEW
+router.get(
+  "/revenue",
+  // jwtCheck,
+  jwtParse,
+  MyRestaurantController.getMyRestaurantRevenue
+);
+
 
 export default router;

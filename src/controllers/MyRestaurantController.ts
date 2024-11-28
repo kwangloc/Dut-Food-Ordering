@@ -159,11 +159,124 @@ const getMyRestaurantReviews = async (req: Request, res: Response) => {
   }
 }
 
+// REVENUE
+// const getMyRestaurantRevenue = async (req: Request, res: Response) => {
+//   try {
+//     const restaurant = await Restaurant.findOne({ user: req.userId });
+//     if (!restaurant) {
+//       return res.status(404).json({ message: "restaurant not found" });
+//     }
+
+//     // const revenue = await Order.find({ restaurant: restaurant._id })
+//     // res.json(revenue);
+
+//     //
+//     const tmpRevenueByDate: { [key: string]: any[] } = {};
+    
+//     const revenueByDate: { [key: string]: any[] } = {};
+//     const orders = await Order.find({ restaurant: restaurant._id });
+//     orders.forEach(order => {
+//       const date = order.createdAt.toISOString().split('T')[0];
+//       if (!tmpRevenueByDate[date]) {
+//       tmpRevenueByDate[date] = [];
+//       revenueByDate[date] = [];
+//       }
+//       tmpRevenueByDate[date].push(order);
+//     });
+
+//     for (const date in tmpRevenueByDate) {
+//       const revenue: { 
+//         totalAmount: number,
+//         menuItems: any[] 
+//       } = { 
+//         totalAmount: 0,
+//         menuItems: [] 
+//       };
+//       for (const order of tmpRevenueByDate[date]) {
+//         revenue.totalAmount += parseFloat(order.totalAmount);
+//         for (const item of order.cartItems) {
+//           revenue.menuItems.push(item);
+//         }
+//       }
+//       revenueByDate[date].push(revenue);
+//     }
+//     console.log("revenueByDate:", revenueByDate);
+
+//     // tmpRevenueByDate.forEach(day => {
+//     //   day.forEach(order => {
+
+//     //   })
+//     // }) 
+
+
+//     res.json(tmpRevenueByDate);
+//     //
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ message: "something went wrong" });
+//   }
+// }
+
+const getMyRestaurantRevenue = async (req: Request, res: Response) => {
+  try {
+    // Find the restaurant associated with the logged-in user
+    const restaurant = await Restaurant.findOne({ user: req.userId });
+    if (!restaurant) {
+      return res.status(404).json({ message: "Restaurant not found" });
+    }
+
+    // Fetch all orders for the restaurant
+    const orders = await Order.find({ restaurant: restaurant._id });
+
+    // Object to store revenue and item quantities by date
+    const revenueByDate: {
+      [key: string]: {
+        totalAmount: number;
+        items: { menuItemId: string; name: string; quantity: number }[];
+      };
+    } = {};
+
+    // Group orders by date and aggregate data
+    orders.forEach(order => {
+      const date = order.createdAt.toISOString().split('T')[0];
+      if (!revenueByDate[date]) {
+        revenueByDate[date] = { totalAmount: 0, items: [] };
+      }
+
+      // Add to the total amount for the day
+      revenueByDate[date].totalAmount += parseFloat(order.totalAmount?.toString() || "0");
+
+      // Aggregate item data
+      order.cartItems.forEach((item: any) => {
+        const existingItem = revenueByDate[date].items.find(
+          menuItem => menuItem.menuItemId === item.menuItemId
+        );
+        if (existingItem) {
+          existingItem.quantity += item.quantity;
+        } else {
+          revenueByDate[date].items.push({
+            menuItemId: item.menuItemId,
+            name: item.name,
+            quantity: item.quantity
+          });
+        }
+      });
+    });
+
+    // Send the aggregated revenue data as a response
+    res.json(revenueByDate);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
 export default {
   updateOrderStatus,
   getMyRestaurantOrders,
   getMyRestaurant,
   createMyRestaurant,
   updateMyRestaurant,
-  getMyRestaurantReviews
+  getMyRestaurantReviews,
+  getMyRestaurantRevenue
 };

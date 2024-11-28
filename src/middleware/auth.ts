@@ -28,12 +28,17 @@ export const jwtParse = async (
 
   console.log(authorization);
 
-  if (!authorization || !authorization.startsWith("Bearer ")) {
+  // if (!authorization || !authorization.startsWith("Bearer ")) {
+  //   return res.sendStatus(401);
+  // }
+
+  // const token = authorization.split(" ")[1];
+
+  if (!authorization) {
     return res.sendStatus(401);
   }
 
-  console.log("HERE");
-  const token = authorization.split(" ")[1];
+  const token = authorization;
 
   try {
     const decoded = jwt.decode(token) as jwt.JwtPayload;
