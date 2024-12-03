@@ -238,17 +238,64 @@ const createMyRestaurantPromotion = async (req: Request, res: Response) => {
 
 const getMyRestaurantPromotion = async (req: Request, res: Response) => {
   try {
+    // 1. check valid restaurant
     const restaurant = await Restaurant.findOne({ user: req.userId });
     if (!restaurant) {
       return res.status(404).json({ message: "restaurant not found" });
     }
-
+    // 2. find all promotions
     const promotions = await Promotion.find({ restaurant: restaurant._id })
 
     res.json(promotions);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "something went wrong" });
+  }
+}
+
+
+const updateMyRestaurantPromotion = async (req: Request, res: Response) => {
+  try {
+
+    // 1. check valid restaurant
+    const restaurant = await Restaurant.findOne({
+      user: req.userId,
+    });
+
+    if (!restaurant) {
+      return res.status(404).json({ message: "restaurant not found" });
+    }
+
+    // 2. update
+    const { promotionId } = req.params;
+    // const promotion = await Promotion.findById(promotionId);
+    // if (!promotion) {
+    //   return res.status(404).json({ message: "promotion not found" });
+    // }
+    
+    const promotion = await Promotion.findOneAndUpdate(
+      { _id: promotionId},
+      req.body,
+      { new: true }
+    );
+    
+    if (!promotion) {
+      return res.status(404).json({ message: "promotion not found" });
+    }
+
+    // promotion.name = req.body.name;
+    // promotion.description = req.body.description;
+    // promotion.status = req.body.status;
+    // promotion.num_limit = req.body.num_limit;
+    // promotion.num_used = req.body.num_used;
+    // promotion.dateStart = req.body.dateStart;
+    // promotion.dateEnd = req.body.dateEnd;
+    // await promotion.save();
+    
+    res.status(200).send(promotion);
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json({ message: error });
   }
 }
 
@@ -261,5 +308,6 @@ export default {
   getMyRestaurantReviews,
   getMyRestaurantRevenue,
   createMyRestaurantPromotion,
-  getMyRestaurantPromotion
+  getMyRestaurantPromotion,
+  updateMyRestaurantPromotion
 };

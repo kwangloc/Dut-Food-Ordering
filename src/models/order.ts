@@ -22,6 +22,7 @@ const orderSchema = new mongoose.Schema({
     enum: ["placed", "paid", "inProgress", "outForDelivery", "delivered"],
   },
   createdAt: { type: Date, default: Date.now },
+  promotion: {type: mongoose.Schema.Types.ObjectId, ref: "Promotion"}
 });
 
 const Order = mongoose.model("Order", orderSchema);

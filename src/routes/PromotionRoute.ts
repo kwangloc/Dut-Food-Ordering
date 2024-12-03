@@ -21,4 +21,10 @@ router.post(
   PromotionController.usePromotion
 );
 
+// router.put(
+//   "/",
+//   jwtParse,
+//   PromotionController.updatePromotion
+// );
+
 export default router;

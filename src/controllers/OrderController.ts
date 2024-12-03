@@ -21,6 +21,7 @@ type CheckoutSessionRequest = {
     city: string;
   };
   restaurantId: string;
+  promotionId: string;
 };
 
 // Functions

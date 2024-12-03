@@ -86,5 +86,12 @@ router.post(
   MyRestaurantController.createMyRestaurantPromotion
 );
 
+router.put(
+  "/promotion/:promotionId",
+  // jwtCheck,
+  jwtParse,
+  MyRestaurantController.updateMyRestaurantPromotion
+);
+
 
 export default router;
