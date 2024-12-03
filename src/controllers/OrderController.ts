@@ -1,7 +1,9 @@
 import Stripe from "stripe";
 import { Request, Response } from "express";
+// models
 import Restaurant, { MenuItemType } from "../models/restaurant";
 import Order from "../models/order";
+import Promotion from "../models/promotion";
 
 const STRIPE = new Stripe(process.env.STRIPE_API_KEY as string);
 const FRONTEND_URL = process.env.FRONTEND_URL as string;
@@ -41,14 +43,25 @@ const getMyOrders = async (req: Request, res: Response) => {
 const createCheckoutSession = async (req: Request, res: Response) => {
   try {
     const checkoutSessionRequest: CheckoutSessionRequest = req.body;
-
+    // find restaurant
     const restaurant = await Restaurant.findById(
       checkoutSessionRequest.restaurantId
     );
-
     if (!restaurant) {
       throw new Error("Restaurant not found");
     }
+
+    // find promotion
+    const promotion = await Promotion.findById(
+      checkoutSessionRequest.promotionId
+    );
+
+    if (!promotion) {
+      throw new Error("Promotion not found");
+    }
+    const promotionData = promotion
+      ? { type: promotion.type, value: promotion.value } // e.g., { type: 'percentage', value: 10 }
+      : undefined;
 
     // New order to database
     const newOrder = new Order({
@@ -58,18 +71,20 @@ const createCheckoutSession = async (req: Request, res: Response) => {
       deliveryDetails: checkoutSessionRequest.deliveryDetails,
       cartItems: checkoutSessionRequest.cartItems,
       createdAt: new Date(),
+      promotion: promotion
     });
 
     const lineItems = createLineItems(
       checkoutSessionRequest,
-      restaurant.menuItems
+      restaurant.menuItems,
+      promotionData
     );
 
     console.log("~~~~~~~~~~~~~~~~~~~~~~~createCheckoutSession");
     console.log(newOrder._id);
     const session = await createSession(
       lineItems,
-      newOrder._id.toString(), // Mongoose has created id even though the newOrder hasn't been created yet
+      newOrder._id.toString(), // Mongoose has created id even though the newOrder hasn't been saved yet
       restaurant.deliveryPrice,
       restaurant._id.toString()
     );
@@ -89,7 +104,8 @@ const createCheckoutSession = async (req: Request, res: Response) => {
 // menuItems for the price
 const createLineItems = (
   checkoutSessionRequest: CheckoutSessionRequest,
-  menuItems: MenuItemType[]
+  menuItems: MenuItemType[],
+  promotion?: { type: string; value: number }
 ) => {
   // 1. foreach cartItem in request, get the menuItem object from menuItems array
   // which comes from restaurant
@@ -106,11 +122,21 @@ const createLineItems = (
       throw new Error(`Menu item not found: ${cartItem.menuItemId}`);
     }
 
+    let unitAmount = menuItem.price;
+    if (promotion) {
+      if (promotion.type === "percentage") {
+        unitAmount = Math.round(unitAmount * (1 - promotion.value / 100));
+      } else if (promotion.type === "fixed") {
+        unitAmount = Math.max(0, unitAmount - promotion.value);
+      }
+    }
+
     // Initialize LineItem (convention in Stripe)
     const line_item: Stripe.Checkout.SessionCreateParams.LineItem = {
       price_data: {
         currency: "gbp",
-        unit_amount: menuItem.price,
+        // unit_amount: menuItem.price,
+        unit_amount: unitAmount,
         product_data: {
           name: menuItem.name,
         },

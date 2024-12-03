@@ -253,7 +253,6 @@ const getMyRestaurantPromotion = async (req: Request, res: Response) => {
   }
 }
 
-
 const updateMyRestaurantPromotion = async (req: Request, res: Response) => {
   try {
 
@@ -291,7 +290,7 @@ const updateMyRestaurantPromotion = async (req: Request, res: Response) => {
     // promotion.dateStart = req.body.dateStart;
     // promotion.dateEnd = req.body.dateEnd;
     // await promotion.save();
-    
+
     res.status(200).send(promotion);
   } catch (error) {
     console.log("error", error);
