@@ -6,8 +6,8 @@ const promotionSchema = new mongoose.Schema({
     ref: "Restaurant" 
   },
   name: { type: String, required: true },
-  type: { type: String, enum: ["percentage", "fixed"], required: true },
-  value: { type: Number, required: true },
+  discountType: { type: String, enum: ["percentage", "flat"], required: true },
+  discountAmount: { type: Number, required: true },
   description: { type: String, required: true },
   // status: { 
   //   type: String, 

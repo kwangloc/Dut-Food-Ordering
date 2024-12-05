@@ -52,16 +52,16 @@ const createCheckoutSession = async (req: Request, res: Response) => {
     }
 
     // find promotion
-    const promotion = await Promotion.findById(
-      checkoutSessionRequest.promotionId
-    );
-
-    if (!promotion) {
-      throw new Error("Promotion not found");
+    if (!checkoutSessionRequest.promotionId) {
+      throw new Error("promotionId not provided");
     }
-    const promotionData = promotion
-      ? { type: promotion.type, value: promotion.value } // e.g., { type: 'percentage', value: 10 }
-      : undefined;
+
+
+    const promotion = await Promotion.findById(checkoutSessionRequest.promotionId);
+    console.log("@@@@@@promotion", promotion);
+    if (!promotion || !promotion.isActive) {
+      throw new Error("Invalid or inactive promotion");
+    }
 
     // New order to database
     const newOrder = new Order({
@@ -71,22 +71,38 @@ const createCheckoutSession = async (req: Request, res: Response) => {
       deliveryDetails: checkoutSessionRequest.deliveryDetails,
       cartItems: checkoutSessionRequest.cartItems,
       createdAt: new Date(),
-      promotion: promotion
+      promotion: checkoutSessionRequest.promotionId
     });
 
+    // Create line items for Stripe
     const lineItems = createLineItems(
       checkoutSessionRequest,
-      restaurant.menuItems,
-      promotionData
+      restaurant.menuItems
     );
+
+
+    // Calculate discount amount based on promotion type
+    let discountAmount = 0;
+    if (promotion.discountType === "percentage") {
+      // discountAmount = Math.floor((totalAmount * promotion.discountAmount) / 100);
+      discountAmount = promotion.discountAmount;
+    } else if (promotion.discountType === "flat") {
+      discountAmount = promotion.discountAmount;
+    }
+
+    const discounts = discountAmount > 0 
+      ? [{ coupon: await createStripeCoupon(discountAmount, promotion.name, promotion.discountType) }] 
+      : [];
 
     console.log("~~~~~~~~~~~~~~~~~~~~~~~createCheckoutSession");
     console.log(newOrder._id);
+
     const session = await createSession(
       lineItems,
       newOrder._id.toString(), // Mongoose has created id even though the newOrder hasn't been saved yet
       restaurant.deliveryPrice,
-      restaurant._id.toString()
+      restaurant._id.toString(),
+      discounts
     );
 
     if (!session.url) {
@@ -101,11 +117,31 @@ const createCheckoutSession = async (req: Request, res: Response) => {
   }
 };
 
+
+const createStripeCoupon = async (discountAmount: number, promotionName: string, discountType: string) => {
+  const couponData: Stripe.CouponCreateParams = {
+    name: promotionName,
+    duration: "once",
+  };
+
+  if (discountType === "percentage") {
+    console.log("@@@discountAmount:", discountAmount);
+    couponData.percent_off = discountAmount;
+    // console.log("@@@discountAmount:", discountAmount);
+  } else if (discountType === "flat") {
+    couponData.amount_off = discountAmount*100; // dollar to cent
+    couponData.currency = "usd"; // Set currency for flat discounts
+  }
+  const coupon = await STRIPE.coupons.create(couponData);
+  console.log("@@@@ Created coupon:", coupon);
+  return coupon.id;
+};
+
+
 // menuItems for the price
 const createLineItems = (
   checkoutSessionRequest: CheckoutSessionRequest,
-  menuItems: MenuItemType[],
-  promotion?: { type: string; value: number }
+  menuItems: MenuItemType[]
 ) => {
   // 1. foreach cartItem in request, get the menuItem object from menuItems array
   // which comes from restaurant
@@ -122,21 +158,11 @@ const createLineItems = (
       throw new Error(`Menu item not found: ${cartItem.menuItemId}`);
     }
 
-    let unitAmount = menuItem.price;
-    if (promotion) {
-      if (promotion.type === "percentage") {
-        unitAmount = Math.round(unitAmount * (1 - promotion.value / 100));
-      } else if (promotion.type === "fixed") {
-        unitAmount = Math.max(0, unitAmount - promotion.value);
-      }
-    }
-
     // Initialize LineItem (convention in Stripe)
     const line_item: Stripe.Checkout.SessionCreateParams.LineItem = {
       price_data: {
-        currency: "gbp",
-        // unit_amount: menuItem.price,
-        unit_amount: unitAmount,
+        currency: "usd",
+        unit_amount: menuItem.price,
         product_data: {
           name: menuItem.name,
         },
@@ -154,10 +180,12 @@ const createSession = async (
   lineItems: Stripe.Checkout.SessionCreateParams.LineItem[],
   orderId: string,
   deliveryPrice: number,
-  restaurantId: string
+  restaurantId: string,
+  discounts: Stripe.Checkout.SessionCreateParams.Discount[] = []
 ) => {
   console.log("~~~~~~~~~~~~~~~~~~~~~~~createSession");
   console.log(orderId);
+  console.log("@@@@discounts:", discounts);
   const sessionData = await STRIPE.checkout.sessions.create({
     line_items: lineItems,
     shipping_options: [
@@ -167,12 +195,13 @@ const createSession = async (
           type: "fixed_amount",
           fixed_amount: {
             amount: deliveryPrice,
-            currency: "gbp",
+            currency: "usd",
           },
         },
       },
     ],
     mode: "payment",
+    discounts,
     metadata: {
       orderId,
       restaurantId,
