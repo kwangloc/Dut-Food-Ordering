@@ -11,7 +11,7 @@ const getRestaurant = async (req: Request, res: Response) => {
     }
 
     // res.json(restaurant);
-    res.json();
+    res.json("123");
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "something went wrong" });
