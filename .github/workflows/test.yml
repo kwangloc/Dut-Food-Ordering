@@ -30,3 +30,11 @@ jobs:
       # Run tests
       - name: Run tests
         run: npx jest
+      # Deploy to render
+      - name: Deploy
+        # Only run this step if the branch is production
+        if: github.ref == 'refs/heads/production'
+        env:
+          deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          curl "$deploy_url"
