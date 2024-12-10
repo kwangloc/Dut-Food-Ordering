@@ -33,7 +33,7 @@ jobs:
       # Deploy to render
       - name: Deploy
         # Only run this step if the branch is production
-        if: github.ref == 'refs/heads/production'
+        if: github.ref == 'refs/heads/main'
         env:
           deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
         run: |
