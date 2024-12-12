@@ -29,7 +29,7 @@ app.use("/api/order/checkout/webhook", express.raw({ type: "*/*" }));
 app.use(express.json());
 
 app.get("/health", async (req: Request, res: Response) => {
-  res.send({ message: "health Oe!" });
+  res.send({ message: "health Ok1!" });
 });
 
 app.use("/api/my/user", myUserRoute);
